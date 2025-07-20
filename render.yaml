@@ -1,32 +1,26 @@
 services:
-  # API backend service
   - type: web
     name: vvvk-portfolio-server
     env: node
     buildCommand: cd server && npm install
     startCommand: cd server && npm start
-    healthCheckPath: /health   # adjust to your endpoint
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
     plan: free
-    branch: main
+    branch: master
     autoDeploy: true
 
-  # Static frontend service
-  - type: web
+  - type: static
     name: vvvk-portfolio-client
-    env: node
     buildCommand: cd client && npm install && npm run build
-    startCommand: cd client && npm run preview -- --port 3000
     staticPublishPath: client/dist
     envVars:
-      - key: NODE_ENV
-        value: production
       - key: VITE_API_URL
         value: https://vvvk-portfolio-server.onrender.com
+    branch: master
     plan: free
-    branch: main
     autoDeploy: true
